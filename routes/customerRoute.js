@@ -13,16 +13,16 @@ router.get(
   requireLogin,
   customerController.read
 )
-// router.put(
-//   '/:id',
-//   requireLogin,
-//   customerController.update
-// )
-// router.delete(
-//   '/:id',
-//   requireLogin,
-//   customerController.remove
-// )
+router.put(
+  '/:id',
+  requireLogin,
+  customerController.update
+)
+router.delete(
+  '/:id',
+  requireLogin,
+  customerController.remove
+)
 
 
 

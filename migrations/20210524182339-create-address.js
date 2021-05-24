@@ -1,42 +1,34 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Customers', {
+    await queryInterface.createTable('Addresses', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      store_id:{
+      address: {
+        type: Sequelize.STRING
+      },
+      address2: {
+        type: Sequelize.STRING
+      },
+      district: {
+        type: Sequelize.STRING
+      },
+      city_id: {
         type: Sequelize.INTEGER,
-        references: {
-          model: 'stores',
-          key: 'id',
-          as:'store'
-        }
+        },
+      postal_code: { 
+        type: Sequelize.STRING 
       },
-      first_name: {
-        type: Sequelize.STRING
-      },
-      last_name: {
-        type: Sequelize.STRING
-      },
-      email: {
-        type: Sequelize.STRING
-      },
-      address_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'addresses',
-          key: 'id',
-          as:'address'
-        }
-      },
-      active: {
-        type: Sequelize.TINYINT,
-        defaultValue: true
-      },
+      phone: {
+         type: Sequelize.STRING
+         },
+      location: {
+         type: Sequelize.GEOMETRY
+         },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -48,7 +40,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Customers');
+    await queryInterface.dropTable('Addresses');
   }
 };
-
