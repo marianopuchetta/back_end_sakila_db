@@ -11,31 +11,37 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Film.belongsTo(models.Language,{foreignKey:{name:'language_id'}})
-      Film.belongsTo(models.Language, {foreignKey: {name: 'original_language_id' }});
-      Film.belongsToMany(models.Actor, { 
+      Film.belongsTo(models.Language, { foreignKey: { name: 'language_id' } })
+      Film.belongsTo(models.Language, { foreignKey: { name: 'original_language_id' } });
+      Film.belongsToMany(models.Actor, {
         through: models.Film_actor,
-        as:'filmHasActor',
+        as: 'filmHasActor',
         foreignKey: 'film_id',
-        otherKey: 'actor_id', 
+        otherKey: 'actor_id',
+      }),
+      Film.belongsToMany(models.Store, {
+        through: models.Inventory,
+        as: 'filmHasInvnetory',
+        foreignKey: 'film_id',
+        otherKey: 'store_id',
       })
     }
   };
   Film.init({
     title: DataTypes.STRING,
     description: DataTypes.TEXT,
-    release_year:DataTypes.STRING,
-    rental_duration:DataTypes.STRING,
-    rental_rate:DataTypes.DECIMAL(4,2),
-    length:DataTypes.INTEGER,
-    replacement_cost: DataTypes.DECIMAL(5,2),
-    rating:{
-        type: DataTypes.ENUM,
-        values: ['G', 'PG', 'PG-13', 'R', 'NC-17']
+    release_year: DataTypes.STRING,
+    rental_duration: DataTypes.STRING,
+    rental_rate: DataTypes.DECIMAL(4, 2),
+    length: DataTypes.INTEGER,
+    replacement_cost: DataTypes.DECIMAL(5, 2),
+    rating: {
+      type: DataTypes.ENUM,
+      values: ['G', 'PG', 'PG-13', 'R', 'NC-17']
     },
-    special_features:{
-        type: DataTypes.ENUM,
-    values: ['Trailers', 'Commentaries', 'Deleted Scenes', 'Behind the Scenes']
+    special_features: {
+      type: DataTypes.ENUM,
+      values: ['Trailers', 'Commentaries', 'Deleted Scenes', 'Behind the Scenes']
     }
   }, {
     sequelize,

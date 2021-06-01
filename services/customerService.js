@@ -13,12 +13,19 @@ const readCustomer = async (limit, offset) => {
   limit = limit && parseInt(limit, 10)
   offset = offset && parseInt(offset, 10)
 
-  return await db.Customer.findAll({ limit, offset })
+  return await db.Customer.findAll({ 
+    limit,
+     offset,
+     attributes:['first_name','last_name'],
+     include:{
+    model: db.Address,
+    attributes:['address']
+  } })
 }
 
 const updateCustomer = async (store_id, first_name, last_name, email, address_id, customer_id) => {
   let customer = await db.Customer.findOne({ where: { id: customer_id } })
-  
+
   if (!customer) {
     throw new errors.NotFound()
   }
@@ -32,7 +39,7 @@ const updateCustomer = async (store_id, first_name, last_name, email, address_id
   await customer.save()
   await customer.reload()
   return customer.toJSON()
- 
+
 }
 
 const removeCustomer = async (customer_id) => {
@@ -43,7 +50,7 @@ const removeCustomer = async (customer_id) => {
 
   await customerToRemove.destroy()
 
-  return {ok: 'CustumerRemoved'}
+  return { ok: 'CustumerRemoved' }
 }
 
 module.exports = {

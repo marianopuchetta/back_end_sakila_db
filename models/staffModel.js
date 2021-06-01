@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Staff.belongsTo(models.Address, { as: 'address', foreignKey: {name: 'address_id' }});
-      Staff.belongsTo(models.Store, { as: 'store', foreignKey: {name: 'store_id' }});
+      Staff.belongsTo(models.Store, { as:'store', foreignKey:'store_id'});
+      Staff.hasOne(models.Store, { as:'manager_staff', foreignKey: 'manager_staff_id'});
     }
   };
   Staff.init({

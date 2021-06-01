@@ -8,6 +8,9 @@ const userRouter = require('./routes/userRoute')
 const actorRouter = require('./routes/actorRoute')
 const filmRouter = require('./routes/filmRoute')
 const customerRouter = require('./routes/customerRoute')
+const staffRouter = require('./routes/staffRoute')
+const storeRouter = require('./routes/storeRoute')
+const inventoryRouter = require('./routes/inventoryRoute')
 
 
 var app = express()
@@ -26,6 +29,9 @@ app.use('/api/user', userRouter)
 app.use('/api/actor', actorRouter)
 app.use('/api/film', filmRouter)
 app.use('/api/customer', customerRouter)
+app.use('/api/staff', staffRouter)
+app.use('/api/store', storeRouter)
+app.use('/api/inventory', inventoryRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
