@@ -16,9 +16,9 @@ module.exports = (sequelize, DataTypes) => {
       Store.belongsTo(models.Address, { as: 'address', foreignKey: { name: 'address_id' } });
       Store.belongsToMany(models.Film, {
         through: models.Inventory,
-        as: 'storehasInventory',
+       
         foreignKey: 'store_id',
-        otherKey: 'film_id',
+       
       })
     }
   };

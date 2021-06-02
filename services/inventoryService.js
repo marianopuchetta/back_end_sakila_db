@@ -42,7 +42,7 @@ const updateInventory = async (film_id, store_id, inventoryId, userId) => {
     throw new errors.NotFound()
   }
 
-  await db.Inventory.update({
+  const  updatedInventory = await db.Inventory.update({
     film_id: film_id,
     store_id: store_id
   }, {
@@ -52,7 +52,8 @@ const updateInventory = async (film_id, store_id, inventoryId, userId) => {
   });
 
   inventory = await db.Inventory.findOne({ where: { id: inventoryId } })
-
+  
+  
   return inventory.toJSON()
 }
 

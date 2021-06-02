@@ -37,7 +37,7 @@ const updateStore = async (address_id,manager_staff_id, storeId, userId) => {
 
   store.address_id = address_id ? address_id : store.address_id
   store.manager_staff_id = manager_staff_id ? manager_staff_id : store.manager_staff_id
-  console.log(store.address_id + ' ' + store.manager_staff_id + ' ' + address_id + ' ' + manager_staff_id)
+  
   await store.save()
   await store.reload()
   return store.toJSON()

@@ -18,12 +18,11 @@ module.exports = (sequelize, DataTypes) => {
         as: 'filmHasActor',
         foreignKey: 'film_id',
         otherKey: 'actor_id',
-      }),
+      })
       Film.belongsToMany(models.Store, {
         through: models.Inventory,
-        as: 'filmHasInvnetory',
-        foreignKey: 'film_id',
-        otherKey: 'store_id',
+        as: 'filmHasInventory',
+        foreignKey: 'film_id'
       })
     }
   };
