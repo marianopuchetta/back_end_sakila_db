@@ -16,7 +16,7 @@ const readCustomer = async (limit, offset) => {
   return await db.Customer.findAll({ 
     limit,
      offset,
-     attributes:['first_name','last_name'],
+     attributes:['id','first_name','last_name'],
      include:{
     model: db.Address,
     attributes:['address']

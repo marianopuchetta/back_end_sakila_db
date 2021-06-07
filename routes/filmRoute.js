@@ -28,8 +28,13 @@ router.get(
   requireLogin,
   filmService.getAllActorsFromFilm
 )
-router.get('/allmoviesactor',requireLogin,
-filmService.getAllMoviesActor)
+router.get('/allmoviesactor',
+  requireLogin,
+  filmService.getAllMoviesActor)
+
+router.get('/allfilmsrented/:id',
+  requireLogin,
+  filmService.getAllFilmsRentedById)
 
 
 

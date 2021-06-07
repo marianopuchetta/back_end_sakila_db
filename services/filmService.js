@@ -94,18 +94,42 @@ const filmsActor = async (limit, offset, first_name, last_name) => {
     if (!actor) {
         throw new errors.NotFound()
     }
-
     let { id } = actor
     let films = await db.Film_actor.findAll({
         where: { actor_id: id },
-        attributes:[],
+        attributes: [],
         include: {
             model: db.Film,
             as: 'film',
-            attributes:['title']
+            attributes: ['title']
         }
     })
     return films
+}
+
+const allFilmsRentedById = async (id) => {
+    console.log(id)
+    let films_rented = await db.Rental.findAll({ 
+        where: { customer_id:id },
+        attributes:['rental_date'],
+        raw: true,
+        include:[{
+            model : db.Customer,
+            as: 'customer',
+            attributes:['first_name','last_name']
+        },{
+            model: db.Inventory,
+            as: 'inventory',
+            attributes:[],
+            include:{
+                model : db.Film,
+                as:'film',
+                attributes:['title']
+            }
+        }
+    ]
+    })
+    return films_rented
 }
 module.exports = {
     createFilm,
@@ -113,5 +137,6 @@ module.exports = {
     updateFilm,
     removeFilm,
     actorsFromFilm,
-    filmsActor
+    filmsActor,
+    allFilmsRentedById
 }
