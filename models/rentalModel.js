@@ -13,7 +13,8 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Rental.belongsTo(models.Inventory, {as:'inventory', foreignKey: { name: 'inventory_id' } })
       Rental.belongsTo(models.Customer, { as:'customer',foreignKey: { name: 'customer_id' } });
-      Rental.belongsTo(models.Staff, { foreignKey: { name: 'staff_id' } });
+      Rental.belongsTo(models.Staff, { as:'staff',foreignKey: { name: 'staff_id' } });
+      Rental.hasOne(models.Payment, {foreignKey: { name: 'rental_id' } });
     }
   };
   Rental.init({

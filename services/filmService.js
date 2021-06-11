@@ -114,10 +114,6 @@ const allFilmsRentedById = async (id) => {
         attributes:['rental_date'],
         raw: true,
         include:[{
-            model : db.Customer,
-            as: 'customer',
-            attributes:['first_name','last_name']
-        },{
             model: db.Inventory,
             as: 'inventory',
             attributes:[],
