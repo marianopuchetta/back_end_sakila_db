@@ -23,6 +23,11 @@ router.delete(
   requireLogin,
   paymentController.remove
 )
+router.get(
+  '/paymentsbycustomer/:id',
+  requireLogin,
+  paymentController.paymentByCustomerId
+)
 
 
 

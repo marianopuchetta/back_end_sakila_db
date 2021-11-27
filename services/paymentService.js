@@ -8,6 +8,17 @@ const createPayment = async (customer_id, staff_id, rental_id, amount, payment_d
     return await db.Payment.create(newPayment)
 }
 
+/**
+   select c.id,c.first_name,c.last_name,count(*) as 'transactions',sum(p.amount) as 'total'
+   from payments p
+   join customers c  on c.id = p.customer_id 
+   group by c.id
+   order by sum(p.amount) desc
+
+ * @param {*} limit 
+ * @param {*} offset 
+ * @returns 
+ */
 const readPayment = async (limit, offset) => {
     limit = limit && parseInt(limit, 10)
     offset = offset && parseInt(offset, 10)
@@ -15,18 +26,15 @@ const readPayment = async (limit, offset) => {
     return await db.Payment.findAll({
         limit,
         offset,
-        raw: true,
-        attributes:['amount'],
+        // raw: true,
+        group: db.Customer.sequelize.col('customer_id'),
+        attributes: [[db.Customer.sequelize.fn('count', db.Customer.sequelize.col('customer_id')), 'transactions'],
+                    [db.Payment.sequelize.fn('sum', db.Payment.sequelize.col('amount')), 'total_amount']],
+        order: [[db.Payment.sequelize.col('total_amount'), 'DESC']],
         include: [{
             model: db.Customer,
-            attributes: ['first_name', 'last_name'],
-        },
-        {
-            model: db.Staff,
-            attributes: ['first_name', 'last_name']
-        },
-        {
-            model: db.Rental,
+            as: 'customer',
+            attributes: ['id', 'first_name', 'last_name'],
         }]
     })
 }
@@ -50,16 +58,32 @@ const updatePayment = async (customer_id, staff_id, rental_id, amount, payment_d
 }
 
 const removePayment = async (paymentId) => {
-    let payment = await db.payment.findOne({ where: { id: paymentId } })
+    let payment = await db.Payment.findOne({ where: { id: paymentId } })
 
     if (!payment) {
         throw new errors.NotFound()
     }
 
-
-    await Payment.destroy()
+    await payment.destroy()
 
     return { ok: "PaymentRemoved" }
+}
+const getPaymentsByCustomerId = async (limit, offset, customer_id) => {
+    limit = limit && parseInt(limit, 10)
+    offset = offset && parseInt(offset, 10)
+
+    return await db.Payment.findAll({
+        limit,
+        offset,
+        raw: true,
+        where: { customer_id: customer_id },
+        attributes: [[db.Payment.sequelize.fn('sum', db.Payment.sequelize.col('amount')), 'total_amount']],
+        include: [{
+            model: db.Rental,
+            as: 'rental'
+        }]
+
+    })
 }
 
 module.exports = {
@@ -67,4 +91,5 @@ module.exports = {
     readPayment,
     updatePayment,
     removePayment,
+    getPaymentsByCustomerId
 }

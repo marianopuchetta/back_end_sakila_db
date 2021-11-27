@@ -57,6 +57,24 @@ const remove = async (req, res) => {
   try {
     content = await paymentService.removePayment(paymentId)
   } catch (error) {
+    console.log(error)
+    code = error.statusCode || 500
+    content = { error: error.errorMessage }
+  }
+
+  res.status(code).json(content)
+}
+
+const paymentByCustomerId = async (req,res) =>{
+  const { limit, offset } = req.query
+  const {id :customer_id} = req.params
+  console.log(customer_id)
+  let code = 200
+  let content = {}
+  try {
+    content = await paymentService.getPaymentsByCustomerId(limit, offset,customer_id)
+  } catch (error) {
+    console.log(error)
     code = error.statusCode || 500
     content = { error: error.errorMessage }
   }
@@ -68,5 +86,6 @@ module.exports = {
   create,
    read,
    update,
-   remove
+   remove,
+   paymentByCustomerId
 }
