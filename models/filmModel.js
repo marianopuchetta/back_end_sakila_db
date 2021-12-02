@@ -11,13 +11,19 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Film.belongsTo(models.Language, { foreignKey: { name: 'language_id' } })
-      Film.belongsTo(models.Language, { foreignKey: { name: 'original_language_id' } });
+      Film.belongsTo(models.Language, {as:'language', foreignKey: { name: 'id' } })
+      Film.belongsTo(models.Language, {as:'original_language', foreignKey: { name: 'id' } });
       Film.belongsToMany(models.Actor, {
         through: models.Film_actor,
         as: 'filmHasActor',
         foreignKey: 'film_id',
         otherKey: 'actor_id',
+      })
+      Film.belongsToMany(models.Category, {
+        through: models.Film_category,
+        as: 'filmHasCategory',
+        foreignKey:'film_id',
+        otherKey: 'category_id'
       })
       Film.belongsToMany(models.Store, {
         through: models.Inventory,

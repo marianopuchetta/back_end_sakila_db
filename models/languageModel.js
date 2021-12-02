@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Language.belongsTo(models.Film,{foreignKey:'language_id'})
-      Language.belongsTo(models.Film,{foreignKey:'original_language_id'})
+      Language.belongsTo(models.Film,{as:'language',foreignKey:'id'})
+      Language.belongsTo(models.Film,{as:'original_language',foreignKey:'id'})
     }
   };
   Language.init({

@@ -21,14 +21,16 @@ module.exports = {
         type: Sequelize.INTEGER,
         references: {
           model: 'languages',
-          key: 'language_id'
+          as:'language',
+          key: 'id'
         }
       },
       original_language_id: {
         type: Sequelize.INTEGER,
         references: {
           model: 'languages',
-          key: 'language_id'
+          as: 'original_language',
+          key: 'id'
         }
       },
       rental_duration: { type: Sequelize.STRING },

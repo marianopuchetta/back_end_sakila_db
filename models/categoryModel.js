@@ -11,16 +11,17 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // Category.belongsToMany(models.Film, { 
-      //   through: models.Film_category,
-      //   as:'filmHasCategory',
-      //   foreignKey: 'category_id', 
-      //   otherKey: 'film_id',
-      // })
+        Category.belongsToMany(models.Film, { 
+        through: models.Film_category,
+        as:'categoryHasFilm',
+        foreignKey: 'category_id', 
+        otherKey: 'film_id',
+      })
     }
   };
   Category.init({
-    categoryName: DataTypes.STRING,
+    categoryName: DataTypes.STRING
+    
   }, {
     sequelize,
     modelName: 'Category',

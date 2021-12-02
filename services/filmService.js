@@ -16,12 +16,42 @@ const createFilm = async (title, description, release_year,
     return await db.Film.create(newFilm)
 }
 
-
+/**
+ * 
+ * @param {*} limit 
+ * @param {*} offset 
+ * @returns select f.id,f.title,f.description,f.release_year,f.length,f.rating,f.special_features,l.name as language,c.categoryName as category from film f
+            join film_categories fc on fc.film_id = f.id
+            join categories c on fc.category_id = c.id
+            join languages l on l.language_id = f.language_id
+            order by f.id ASC
+ */
 const readFilm = async (limit, offset) => {
     limit = limit && parseInt(limit, 10)
     offset = limit && parseInt(offset, 10)
 
-    return await db.Film.findAll({ limit, offset })
+    return await db.Film_category.findAll({
+        limit, offset,
+        attributes: [],
+        raw: true,
+        include: [{
+            model: db.Film,
+            attributes: ['id', 'title', 'description', 'release_year', 'length', 'rating', 'special_features'],
+            as: 'film',
+            include:{
+                model: db.Language,
+                as:'language',
+                attributes:['name']
+            }
+        },
+        {
+            model: db.Category,
+            as: 'category',
+            attributes: [['categoryName', 'category']]
+        }
+        ],
+        order: [[db.Film.sequelize.col('film_id'), 'ASC']],
+    })
 }
 
 const updateFilm = async (title, description, release_year,
@@ -109,21 +139,21 @@ const filmsActor = async (limit, offset, first_name, last_name) => {
 
 const allFilmsRentedById = async (id) => {
     console.log(id)
-    let films_rented = await db.Rental.findAll({ 
-        where: { customer_id:id },
-        attributes:['rental_date'],
+    let films_rented = await db.Rental.findAll({
+        where: { customer_id: id },
+        attributes: ['rental_date'],
         raw: true,
-        include:[{
+        include: [{
             model: db.Inventory,
             as: 'inventory',
-            attributes:[],
-            include:{
-                model : db.Film,
-                as:'film',
-                attributes:['title']
+            attributes: [],
+            include: {
+                model: db.Film,
+                as: 'film',
+                attributes: ['title']
             }
         }
-    ]
+        ]
     })
     return films_rented
 }
