@@ -126,6 +126,22 @@ const getAllFilmsRentedById = async (req, res) => {
 
 }
 
+const getAllFilmsByCategory = async (req,res) => {
+  const {limit,offset} = req.query;
+  const {category} = req.body;
+  let code = 200;
+  let resContent = {}
+
+  try {
+    resContent = await filmService.allFilmsByCategory(limit,offset,category)
+  } catch (error) {
+    console.log(error)
+    code = error.statusCode || 500
+    resContent = {error : error.errorMessage}
+  }
+  res.status(code).json(resContent)
+}
+
 module.exports = {
   create,
   read,
@@ -133,5 +149,6 @@ module.exports = {
   remove,
   getAllActorsFromFilm,
   getAllMoviesActor,
-  getAllFilmsRentedById
+  getAllFilmsRentedById,
+  getAllFilmsByCategory
 }

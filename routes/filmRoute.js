@@ -36,6 +36,8 @@ router.get('/allfilmsrented/:id',
   requireLogin,
   filmService.getAllFilmsRentedById)
 
-
+router.get('/allfilmsbycategory',
+requireLogin,
+filmService.getAllFilmsByCategory)
 
 module.exports = router

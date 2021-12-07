@@ -28,8 +28,8 @@ const createFilm = async (title, description, release_year,
  */
 const readFilm = async (limit, offset) => {
     limit = limit && parseInt(limit, 10)
-    offset = limit && parseInt(offset, 10)
-
+    offset = offset  && parseInt(offset * limit, 10)
+     
     return await db.Film_category.findAll({
         limit, offset,
         attributes: [],
@@ -157,6 +157,29 @@ const allFilmsRentedById = async (id) => {
     })
     return films_rented
 }
+
+const allFilmsByCategory = async (limit,offset,category) => {
+    limit = limit && parseInt(limit, 10)
+    offset = offset  && parseInt(offset * limit, 10)
+
+    let categoryToSearch = await db.Category.findOne({
+        where:{categoryName : category}
+    })
+    if(!categoryToSearch){
+        throw new errors.NotFound()
+    }
+    let {id} = categoryToSearch
+    let filmsByCategory = await db.Film_category.findAll({
+        limit,offset,
+        where:{category_id : id},
+        attributes:[],
+        include:{
+            model : db.Film,
+            as : 'film'
+        }
+    })
+return filmsByCategory
+}
 module.exports = {
     createFilm,
     readFilm,
@@ -164,5 +187,6 @@ module.exports = {
     removeFilm,
     actorsFromFilm,
     filmsActor,
-    allFilmsRentedById
+    allFilmsRentedById,
+    allFilmsByCategory
 }
