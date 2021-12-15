@@ -15,6 +15,7 @@ const rentalRouter = require('./routes/rentalRoute')
 const paymentRouter = require('./routes/paymentRoute')
 const categoryRouter = require('./routes/categoryRoute')
 const countryRouter = require('./routes/countryRoute')
+const cityRouter = require('./routes/cityRoute')
 
 
 var app = express()
@@ -40,6 +41,7 @@ app.use('/api/rental', rentalRouter)
 app.use('/api/payment', paymentRouter)
 app.use('/api/category',categoryRouter)
 app.use('/api/country',countryRouter)
+app.use('/api/city',cityRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

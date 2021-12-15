@@ -1,12 +1,12 @@
 const countryService = require('../services/countryService')
 
 const create = async (req,res) => {
-    const {country} = req.body
+    const {name} = req.body
     const{userId} = req.user
     let code = 201
     let resContent = {}
     try{
-        resContent = await countryService.createCountry(country,userId)
+        resContent = await countryService.createCountry(name,userId)
     } catch(error) {
         console.log(error)
         code = error.statusCode || 500
@@ -31,7 +31,7 @@ const read = async (req,res) => {
 }
 
 const update = async (req,res) => {
-    const {country} = req.body
+    const {name} = req.body
     const {id: countryId} = req.params
     const {userId} = req.user
 
@@ -39,7 +39,7 @@ const update = async (req,res) => {
     let resContent = {}
 
     try {
-        resContent = await countryService.updateCountry(country,countryId)
+        resContent = await countryService.updateCountry(name,countryId)
     } catch (error) {
       code = error.statusCode || 500
       resContent = {error:error.errorMessage}  

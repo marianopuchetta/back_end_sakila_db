@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      country: {
+      name: {
         type: Sequelize.STRING
       },
       createdAt: {
@@ -25,3 +25,4 @@ module.exports = {
     await queryInterface.dropTable('Countries');
   }
 };
+

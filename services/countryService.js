@@ -1,9 +1,9 @@
 const db = require('../models')
 const errors = require('../errors/errors')
 
-const createCountry = async (country) => {
+const createCountry = async (name) => {
     const newFilm = {
-        country
+        name
     }
     console.log(newFilm)
     return await db.Country.create(newFilm)
@@ -16,7 +16,7 @@ const readCountry = async (limit, offset) => {
     return await db.Country.findAll({ limit, offset })
 }
 
-const updateCountry = async (country, countryId) => {
+const updateCountry = async (name, countryId) => {
     let countryToUpdate = await db.Country.findOne({
         where: { id: countryId }
     })
@@ -24,7 +24,7 @@ const updateCountry = async (country, countryId) => {
         throw new errors.NotFound()
     }
 
-    countryToUpdate.country = country ? country : countryToUpdate.country
+    countryToUpdate.name = name ? name : countryToUpdate.name
     console.log(countryToUpdate)
     await countryToUpdate.save()
     await countryToUpdate.reload()
